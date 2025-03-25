@@ -127,10 +127,9 @@ public class Drug implements Serializable {
         Drug.warningLabel = warningLabel;
     }
 
-    // Derived attribute: isExpired
     public boolean isExpired() {
         if (expirationDate == null || expirationDate.isEmpty()) {
-            return false; // Assume no expiration if not set
+            return false;
         }
 
         try {
@@ -140,5 +139,16 @@ public class Drug implements Serializable {
             System.out.println("Invalid date format: " + expirationDate);
             return false;
         }
+    }
+
+    // Class method
+    public static List<Drug> getExpiredDrugs() {
+        List<Drug> expiredDrugs = new ArrayList<>();
+        for (Drug drug : extension) {
+            if (drug.isExpired()) {
+                expiredDrugs.add(drug);
+            }
+        }
+        return Collections.unmodifiableList(expiredDrugs);
     }
 }
