@@ -1,4 +1,6 @@
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,13 +10,10 @@ public class Drug implements Serializable {
     private String name;
     private Manufacturer manufacturer;
     private List<String> ingredients;
-
     private String expirationDate;
 
-    // Static class attribute (shared among all Drug objects)
     private static String warningLabel = "Keep out of reach of children.";
 
-    // Constructor enforcing required attributes validation
     public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be null or empty.");
@@ -114,10 +113,9 @@ public class Drug implements Serializable {
     public String toString() {
         return "Drug{name='" + name + "', manufacturer=" + manufacturer +
                 ", ingredients=" + ingredients + ", expirationDate='" + expirationDate +
-                "', warningLabel='" + warningLabel + "'}";
+                "', warningLabel='" + warningLabel + "', isExpired=" + isExpired() + "}";
     }
 
-    // Static getter and setter for the class attribute
     public static String getWarningLabel() {
         return warningLabel;
     }
@@ -127,5 +125,20 @@ public class Drug implements Serializable {
             throw new IllegalArgumentException("Warning label cannot be null or empty.");
         }
         Drug.warningLabel = warningLabel;
+    }
+
+    // Derived attribute: isExpired
+    public boolean isExpired() {
+        if (expirationDate == null || expirationDate.isEmpty()) {
+            return false; // Assume no expiration if not set
+        }
+
+        try {
+            LocalDate expiry = LocalDate.parse(expirationDate);
+            return expiry.isBefore(LocalDate.now());
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format: " + expirationDate);
+            return false;
+        }
     }
 }
