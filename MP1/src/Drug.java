@@ -7,21 +7,29 @@ public class Drug implements Serializable {
     private static final List<Drug> extension = new ArrayList<>();
     private String name;
     private Manufacturer manufacturer;
+    private List<String> ingredients; // Required repeatable attribute
 
     // Optional attribute
     private String expirationDate;
 
     // Constructor enforcing required attributes validation
-    public Drug(String name, Manufacturer manufacturer, String expirationDate) {
+    public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be null or empty.");
         }
         if (manufacturer == null) {
             throw new IllegalArgumentException("Manufacturer cannot be null.");
         }
+        if (ingredients == null || ingredients.isEmpty()) {
+            throw new IllegalArgumentException("At least one ingredient is required.");
+        }
+        for (String ingredient : ingredients) {
+            validateIngredient(ingredient);
+        }
 
         this.name = name;
         this.manufacturer = manufacturer;
+        this.ingredients = new ArrayList<>(ingredients);
         setExpirationDate(expirationDate);
         extension.add(this);
     }
@@ -60,15 +68,41 @@ public class Drug implements Serializable {
         return manufacturer;
     }
 
+    public List<String> getIngredients() {
+        return Collections.unmodifiableList(ingredients);
+    }
+
     public String getExpirationDate() {
         return expirationDate;
     }
 
+    // Setter for expirationDate with validation
     public void setExpirationDate(String expirationDate) {
         if (expirationDate != null && !expirationDate.isEmpty()) {
             this.expirationDate = expirationDate;
         } else {
-            this.expirationDate = null;
+            this.expirationDate = null;  // or throw exception if needed
+        }
+    }
+
+    // Method to add an ingredient
+    public void addIngredient(String ingredient) {
+        validateIngredient(ingredient);
+        ingredients.add(ingredient);
+    }
+
+    // Method to remove an ingredient
+    public void removeIngredient(String ingredient) {
+        if (ingredients.size() == 1) {
+            throw new IllegalStateException("Cannot remove the last ingredient. At least one ingredient must remain.");
+        }
+        ingredients.remove(ingredient);
+    }
+
+    // Private validation method for ingredients
+    private void validateIngredient(String ingredient) {
+        if (ingredient == null || ingredient.trim().isEmpty()) {
+            throw new IllegalArgumentException("Ingredient cannot be null or empty.");
         }
     }
 
@@ -80,6 +114,6 @@ public class Drug implements Serializable {
 
     @Override
     public String toString() {
-        return "Drug{name='" + name + "', manufacturer=" + manufacturer + ", expirationDate='" + expirationDate + "'}";
+        return "Drug{name='" + name + "', manufacturer=" + manufacturer + ", ingredients=" + ingredients + ", expirationDate='" + expirationDate + "'}";
     }
 }
