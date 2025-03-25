@@ -1,9 +1,8 @@
 import java.io.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Drug implements Serializable {
     private static final List<Drug> extension = new ArrayList<>();
@@ -24,9 +23,6 @@ public class Drug implements Serializable {
         if (ingredients == null || ingredients.isEmpty()) {
             throw new IllegalArgumentException("At least one ingredient is required.");
         }
-        for (String ingredient : ingredients) {
-            validateIngredient(ingredient);
-        }
 
         this.name = name;
         this.manufacturer = manufacturer;
@@ -35,120 +31,26 @@ public class Drug implements Serializable {
         extension.add(this);
     }
 
-    public static List<Drug> getExtension() {
-        return Collections.unmodifiableList(new ArrayList<>(extension));
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Drug drug = (Drug) obj;
+        return name.equals(drug.name) && manufacturer.equals(drug.manufacturer);
     }
 
-    public static void removeFromExtension(Drug drug) {
-        extension.remove(drug);
-    }
-
-    public static void saveExtensionToFile(String filename) {
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filename))) {
-            outputStream.writeObject(extension);
-        } catch (IOException e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-    }
-
-    public static void loadExtensionFromFile(String filename) {
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename))) {
-            List<Drug> loadedList = (List<Drug>) inputStream.readObject();
-            extension.clear();
-            extension.addAll(loadedList);
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Manufacturer getManufacturer() {
-        return manufacturer;
-    }
-
-    public List<String> getIngredients() {
-        return Collections.unmodifiableList(ingredients);
-    }
-
-    public String getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(String expirationDate) {
-        if (expirationDate != null && !expirationDate.isEmpty()) {
-            this.expirationDate = expirationDate;
-        } else {
-            this.expirationDate = null;
-        }
-    }
-
-    public void addIngredient(String ingredient) {
-        validateIngredient(ingredient);
-        ingredients.add(ingredient);
-    }
-
-    public void removeIngredient(String ingredient) {
-        if (ingredients.size() == 1) {
-            throw new IllegalStateException("Cannot remove the last ingredient. At least one ingredient must remain.");
-        }
-        ingredients.remove(ingredient);
-    }
-
-    private void validateIngredient(String ingredient) {
-        if (ingredient == null || ingredient.trim().isEmpty()) {
-            throw new IllegalArgumentException("Ingredient cannot be null or empty.");
-        }
-    }
-
-    public static void displayExtension() {
-        for (Drug drug : extension) {
-            System.out.println(drug.getName());
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, manufacturer);
     }
 
     @Override
     public String toString() {
         return "Drug{name='" + name + "', manufacturer=" + manufacturer +
-                ", ingredients=" + ingredients + ", expirationDate='" + expirationDate +
-                "', warningLabel='" + warningLabel + "', isExpired=" + isExpired() + "}";
+                ", ingredients=" + ingredients + ", expirationDate='" + expirationDate + "'}";
     }
 
-    public static String getWarningLabel() {
-        return warningLabel;
-    }
-
-    public static void setWarningLabel(String warningLabel) {
-        if (warningLabel == null || warningLabel.trim().isEmpty()) {
-            throw new IllegalArgumentException("Warning label cannot be null or empty.");
-        }
-        Drug.warningLabel = warningLabel;
-    }
-
-    public boolean isExpired() {
-        if (expirationDate == null || expirationDate.isEmpty()) {
-            return false;
-        }
-
-        try {
-            LocalDate expiry = LocalDate.parse(expirationDate);
-            return expiry.isBefore(LocalDate.now());
-        } catch (DateTimeParseException e) {
-            System.out.println("Invalid date format: " + expirationDate);
-            return false;
-        }
-    }
-
-    // Class method
-    public static List<Drug> getExpiredDrugs() {
-        List<Drug> expiredDrugs = new ArrayList<>();
-        for (Drug drug : extension) {
-            if (drug.isExpired()) {
-                expiredDrugs.add(drug);
-            }
-        }
-        return Collections.unmodifiableList(expiredDrugs);
+    public static List<Drug> getExtension() {
+        return Collections.unmodifiableList(new ArrayList<>(extension));
     }
 }
