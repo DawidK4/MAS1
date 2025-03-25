@@ -7,10 +7,12 @@ public class Drug implements Serializable {
     private static final List<Drug> extension = new ArrayList<>();
     private String name;
     private Manufacturer manufacturer;
-    private List<String> ingredients; // Required repeatable attribute
+    private List<String> ingredients;
 
-    // Optional attribute
     private String expirationDate;
+
+    // Static class attribute (shared among all Drug objects)
+    private static String warningLabel = "Keep out of reach of children.";
 
     // Constructor enforcing required attributes validation
     public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate) {
@@ -76,22 +78,19 @@ public class Drug implements Serializable {
         return expirationDate;
     }
 
-    // Setter for expirationDate with validation
     public void setExpirationDate(String expirationDate) {
         if (expirationDate != null && !expirationDate.isEmpty()) {
             this.expirationDate = expirationDate;
         } else {
-            this.expirationDate = null;  // or throw exception if needed
+            this.expirationDate = null;
         }
     }
 
-    // Method to add an ingredient
     public void addIngredient(String ingredient) {
         validateIngredient(ingredient);
         ingredients.add(ingredient);
     }
 
-    // Method to remove an ingredient
     public void removeIngredient(String ingredient) {
         if (ingredients.size() == 1) {
             throw new IllegalStateException("Cannot remove the last ingredient. At least one ingredient must remain.");
@@ -99,7 +98,6 @@ public class Drug implements Serializable {
         ingredients.remove(ingredient);
     }
 
-    // Private validation method for ingredients
     private void validateIngredient(String ingredient) {
         if (ingredient == null || ingredient.trim().isEmpty()) {
             throw new IllegalArgumentException("Ingredient cannot be null or empty.");
@@ -114,6 +112,20 @@ public class Drug implements Serializable {
 
     @Override
     public String toString() {
-        return "Drug{name='" + name + "', manufacturer=" + manufacturer + ", ingredients=" + ingredients + ", expirationDate='" + expirationDate + "'}";
+        return "Drug{name='" + name + "', manufacturer=" + manufacturer +
+                ", ingredients=" + ingredients + ", expirationDate='" + expirationDate +
+                "', warningLabel='" + warningLabel + "'}";
+    }
+
+    // Static getter and setter for the class attribute
+    public static String getWarningLabel() {
+        return warningLabel;
+    }
+
+    public static void setWarningLabel(String warningLabel) {
+        if (warningLabel == null || warningLabel.trim().isEmpty()) {
+            throw new IllegalArgumentException("Warning label cannot be null or empty.");
+        }
+        Drug.warningLabel = warningLabel;
     }
 }
