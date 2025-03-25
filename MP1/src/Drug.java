@@ -125,4 +125,8 @@ public class Drug implements Serializable {
         return "Drug{name='" + name + "', manufacturer=" + manufacturer +
                 ", ingredients=" + ingredients + ", expirationDate='" + expirationDate + "'}";
     }
+
+    public static void clearExtension() {
+        extension.clear();
+    }
 }
