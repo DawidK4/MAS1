@@ -11,14 +11,22 @@ public class Drug implements Serializable {
     // Optional attribute
     private String expirationDate;
 
+    // Constructor enforcing required attributes validation
     public Drug(String name, Manufacturer manufacturer, String expirationDate) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty.");
+        }
+        if (manufacturer == null) {
+            throw new IllegalArgumentException("Manufacturer cannot be null.");
+        }
+
         this.name = name;
         this.manufacturer = manufacturer;
-        this.expirationDate = expirationDate;
+        setExpirationDate(expirationDate);
         extension.add(this);
     }
 
-    public static List<Drug> getExtension(){
+    public static List<Drug> getExtension() {
         return Collections.unmodifiableList(new ArrayList<>(extension));
     }
 
@@ -26,20 +34,20 @@ public class Drug implements Serializable {
         extension.remove(drug);
     }
 
-    public static void saveExtensionToFile(String filename){
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filename))){
+    public static void saveExtensionToFile(String filename) {
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filename))) {
             outputStream.writeObject(extension);
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
     }
 
-    public static void loadExtensionFromFile(String filename){
-        try (ObjectInputStream outputStream = new ObjectInputStream(new FileInputStream(filename))){
-            List<Drug> loadedList = (List<Drug>) outputStream.readObject();
+    public static void loadExtensionFromFile(String filename) {
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename))) {
+            List<Drug> loadedList = (List<Drug>) inputStream.readObject();
             extension.clear();
             extension.addAll(loadedList);
-        } catch (IOException | ClassNotFoundException e){
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
     }
@@ -64,8 +72,8 @@ public class Drug implements Serializable {
         }
     }
 
-    public static void displayExtension(){
-        for (Drug drug : extension){
+    public static void displayExtension() {
+        for (Drug drug : extension) {
             System.out.println(drug.getName());
         }
     }
