@@ -122,6 +122,14 @@ public class Drug implements Serializable {
         this.description = description;
     }
 
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     // Overriding
     @Override
     public boolean equals(Object obj) {
