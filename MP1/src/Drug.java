@@ -5,13 +5,15 @@ public class Drug implements Serializable {
     private static final List<Drug> extension = new ArrayList<>();
     private String name;
     private Manufacturer manufacturer;
-    private List<String> ingredients;
-    private String expirationDate;
+    private List<String> ingredients; // Repeatable attribute
+    private String expirationDate; // Derived attribute
+    private String description; // Optional attribute
 
-    private static String warningLabel = "Keep out of reach of children.";
+    private static String warningLabel = "Keep out of reach of children."; // Class attribute
 
     // 1st constructor
-    public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate) {
+    public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate, String description) {
+        // Verification of required attributes
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be null or empty.");
         }
@@ -22,16 +24,21 @@ public class Drug implements Serializable {
             throw new IllegalArgumentException("At least one ingredient is required.");
         }
 
+        if (expirationDate == null || expirationDate.isEmpty()){
+            throw new IllegalArgumentException("Expiration date cannot be empty or null!");
+        }
+
         this.name = name;
         this.manufacturer = manufacturer;
         this.ingredients = new ArrayList<>(ingredients);
         this.expirationDate = expirationDate;
+        this.description = description;
         extension.add(this);
     }
 
     // 2nd constructor
-    public Drug(String name, Manufacturer manufacturer, List<String> ingredients) {
-        this(name, manufacturer, ingredients, null);
+    public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate) {
+        this(name, manufacturer, ingredients, expirationDate, null);
     }
 
     public String getName() {
@@ -107,6 +114,15 @@ public class Drug implements Serializable {
         }
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    // Overriding
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -126,6 +142,7 @@ public class Drug implements Serializable {
                 ", ingredients=" + ingredients + ", expirationDate='" + expirationDate + "'}";
     }
 
+    // Class method
     public static void clearExtension() {
         extension.clear();
     }

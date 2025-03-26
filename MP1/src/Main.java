@@ -7,8 +7,8 @@ public class Main {
         Manufacturer moderna = new Manufacturer("Moderna", "Cambridge, USA", "987-654-321", "https://www.moderna.com");
 
         // Create Drugs
-        Drug aspirin = new Drug("Aspirin", pfizer, Arrays.asList("Acetylsalicylic Acid"), "2025-12-31");
-        Drug ibuprofen = new Drug("Ibuprofen", moderna, Arrays.asList("Ibuprofen", "Starch"));
+        Drug aspirin = new Drug("Aspirin", pfizer, Arrays.asList("Acetylsalicylic Acid"), "2025-12-31", "Short description");
+        Drug ibuprofen = new Drug("Ibuprofen", moderna, Arrays.asList("Ibuprofen", "Starch"), "2025-12-31");
 
         // Display drugs
         System.out.println("Created Drugs:");
