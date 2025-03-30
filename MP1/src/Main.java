@@ -42,6 +42,7 @@ public class Main {
         System.out.println("Extension after clearing: " + Drug.getExtension());
         Drug.loadExtensionFromFile("drugs.dat");
         System.out.println("Extension after loading: " + Drug.getExtension());
+        
 
         Scanner scanner = new Scanner(System.in);
         while (true) {

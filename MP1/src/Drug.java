@@ -98,6 +98,7 @@ public class Drug implements Serializable {
         }
     }
 
+    // Has to be fixed 
     public static void loadExtensionFromFile(String filename) {
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename))) {
             List<Drug> loadedList = (List<Drug>) inputStream.readObject();
