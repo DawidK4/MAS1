@@ -7,12 +7,12 @@ public class Drug implements Serializable {
     private Manufacturer manufacturer;
     private List<String> ingredients; // Repeatable attribute
     private String expirationDate; // Derived attribute
-    private Optional<String> description = Optional.empty(); // Optional attribute
+    private String description; // Optional attribute
 
     private static String warningLabel = "Keep out of reach of children."; // Class attribute
 
     // 1st constructor
-    public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate, Optional<String> description) {
+    public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate, String description) {
         // Verification of required attributes
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be null or empty.");
@@ -90,36 +90,17 @@ public class Drug implements Serializable {
         extension.remove(drug);
     }
 
-    public static void saveExtensionToFile(String filename) {
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filename))) {
-            outputStream.writeObject(extension);
-        } catch (IOException e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-    }
-
-    // Has to be fixed 
-    public static void loadExtensionFromFile(String filename) {
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename))) {
-            List<Drug> loadedList = (List<Drug>) inputStream.readObject();
-            extension.clear();
-            extension.addAll(loadedList);
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-    }
-
     public static void displayExtension() {
         for (Drug drug : extension) {
             System.out.println(drug);
         }
     }
 
-    public Optional<String> getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(Optional<String> description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 

@@ -61,24 +61,6 @@ public class Manufacturer implements Serializable {
         return Collections.unmodifiableList(new ArrayList<>(extension));
     }
 
-    public static void saveExtensionToFile(String filename) {
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filename))) {
-            outputStream.writeObject(extension);
-        } catch (IOException e) {
-            System.out.println("An error occurred while saving manufacturers: " + e.getMessage());
-        }
-    }
-
-    public static void loadExtensionFromFile(String filename) {
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename))) {
-            List<Manufacturer> loadedList = (List<Manufacturer>) inputStream.readObject();
-            extension.clear();
-            extension.addAll(loadedList);
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("An error occurred while loading manufacturers: " + e.getMessage());
-        }
-    }
-
     @Override
     public String toString() {
         return "Manufacturer{name='" + name + "', address='" + address + "', contactNumber='" + contactNumber + "', website='" + website + "'}";
