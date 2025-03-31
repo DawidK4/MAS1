@@ -8,7 +8,7 @@ public class Main {
 
         // Creating a Drug
         List<String> ingredients = Arrays.asList("Paracetamol", "Caffeine");
-        Drug drug = new Drug("PainRelief", manufacturer, ingredients, "2026-12-31", "For headache relief");
+        Drug drug = new Drug("PainRelief", manufacturer, ingredients, "2026-12-31", Optional.of("For headache relief"));
         System.out.println("Created Drug: " + drug);
 
         // Testing Getters
@@ -118,7 +118,7 @@ public class Main {
         String expirationDate = scanner.nextLine();
         System.out.print("Enter Description: ");
         String description = scanner.nextLine();
-        new Drug(name, manufacturer, ingredients, expirationDate, description);
+        new Drug(name, manufacturer, ingredients, expirationDate, Optional.of(description));
         System.out.println("Drug added successfully!");
     }
 

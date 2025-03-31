@@ -7,12 +7,12 @@ public class Drug implements Serializable {
     private Manufacturer manufacturer;
     private List<String> ingredients; // Repeatable attribute
     private String expirationDate; // Derived attribute
-    private String description; // Optional attribute
+    private Optional<String> description = Optional.empty(); // Optional attribute
 
     private static String warningLabel = "Keep out of reach of children."; // Class attribute
 
     // 1st constructor
-    public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate, String description) {
+    public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate, Optional<String> description) {
         // Verification of required attributes
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be null or empty.");
@@ -115,11 +115,11 @@ public class Drug implements Serializable {
         }
     }
 
-    public String getDescription() {
+    public Optional<String> getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(Optional<String> description) {
         this.description = description;
     }
 
