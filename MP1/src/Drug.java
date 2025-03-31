@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Drug implements Serializable {
+public class Drug extends ObjectPlus implements Serializable {
     private static final List<Drug> extension = new ArrayList<>();
     private String name;
     private Manufacturer manufacturer;

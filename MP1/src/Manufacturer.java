@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Manufacturer implements Serializable {
+public class Manufacturer extends ObjectPlus implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final List<Manufacturer> extension = new ArrayList<>();
     private String name;
