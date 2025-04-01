@@ -3,9 +3,13 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+        // Create addresses
+        Address address1 = new Address("Wall street", "New York", "9123123", "US");
+        Address address2 = new Address("Kreuzberg", "Berlin", "61", "Germany");
+
         // Create manufacturers
-        Manufacturer manufacturer1 = new Manufacturer("Pfizer", "New York, USA", "123456789", "https://www.pfizer.com");
-        Manufacturer manufacturer2 = new Manufacturer("Moderna", "Cambridge, USA", "987654321", "https://www.modernatx.com");
+        Manufacturer manufacturer1 = new Manufacturer("Pfizer", address1, "123456789", "https://www.pfizer.com");
+        Manufacturer manufacturer2 = new Manufacturer("Moderna",  address2, "987654321", "https://www.modernatx.com");
 
         // Create drugs
         Drug drug1 = new Drug("Paracetamol", manufacturer1, Arrays.asList("Paracetamol", "Starch", "Magnesium Stearate"), "2026-12-01",100.00f, 10, "Pain reliever");
@@ -51,6 +55,7 @@ public class Main {
             System.out.println("\nContent of the loaded extension: ");
             ObjectPlus.showExtent(Drug.class);
             ObjectPlus.showExtent(Manufacturer.class);
+            ObjectPlus.showExtent(Address.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

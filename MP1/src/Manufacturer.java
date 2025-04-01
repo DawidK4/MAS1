@@ -1,14 +1,22 @@
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class Manufacturer extends ObjectPlus{
+public class Manufacturer extends ObjectPlus {
     private static final List<Manufacturer> extension = new ArrayList<>();
     private String name;
-    private String address;
+    private Address address;  // Changed to use Address class
     private String contactNumber;
     private String website;
 
-    public Manufacturer(String name, String address, String contactNumber, String website) {
+    public Manufacturer(String name, Address address, String contactNumber, String website) {
+        validateNotEmpty(name, "Name");
+        validateNotEmpty(contactNumber, "Phone number");
+        validatePhoneNumber(contactNumber);
+        validateNotEmpty(website, "Website");
+        validateWebsite(website);
+
         this.name = name;
         this.address = address;
         this.contactNumber = contactNumber;
@@ -16,27 +24,47 @@ public class Manufacturer extends ObjectPlus{
         extension.add(this);
     }
 
+    // Static validation method
+    public static void validateNotEmpty(String value, String fieldName) {
+        if (value == null || value.isEmpty()) {
+            throw new IllegalArgumentException(fieldName + " cannot be null or empty!");
+        }
+    }
+
+    // Static validation method
+    private static void validatePhoneNumber(String phoneNumber) {
+        String regex = "^\\d{9}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phoneNumber);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Phone number has to have 9 digits without spaces!");
+        }
+    }
+
+    // Static validation method
+    private static void validateWebsite(String website) {
+        if (!(website.startsWith("https://") || website.startsWith("http://"))) {
+            throw new IllegalArgumentException("Website has to start with https:// or http://");
+        }
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty!");
-        }
-
+        validateNotEmpty(name, "Name");
         this.name = name;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        if (address == null || address.isEmpty()) {
-            throw new IllegalArgumentException("Address cannot be null or empty!");
+    public void setAddress(Address address) {
+        if (address == null) {
+            throw new IllegalArgumentException("Address cannot be null!");
         }
-
         this.address = address;
     }
 
@@ -45,14 +73,8 @@ public class Manufacturer extends ObjectPlus{
     }
 
     public void setContactNumber(String contactNumber) {
-        if (contactNumber == null || contactNumber.isEmpty()) {
-            throw new IllegalArgumentException("Contact number cannot be null or empty!");
-        }
-
-        if (contactNumber.length() != 9){
-            throw new IllegalArgumentException("Contact number has to contain 9 digits!");
-        }
-
+        validateNotEmpty(contactNumber, "Phone number");
+        validatePhoneNumber(contactNumber);
         this.contactNumber = contactNumber;
     }
 
@@ -61,15 +83,9 @@ public class Manufacturer extends ObjectPlus{
     }
 
     public void setWebsite(String website) {
-        if (website != null && !website.isEmpty()) {
-            if (website.startsWith("http://") || website.startsWith("https://")) {
-                this.website = website;
-            } else {
-                throw new IllegalArgumentException("Website must start with 'http://' or 'https://'");
-            }
-        } else {
-            this.website = null;
-        }
+        validateNotEmpty(website, "Website");
+        validateWebsite(website);
+        this.website = website;
     }
 
     public static List<Manufacturer> getExtension() {
@@ -78,6 +94,7 @@ public class Manufacturer extends ObjectPlus{
 
     @Override
     public String toString() {
-        return "Manufacturer{name='" + name + "', address='" + address + "', contactNumber='" + contactNumber + "', website='" + website + "'}";
+        return String.format("Manufacturer{name='%s', address='%s', contactNumber='%s', website='%s'}",
+                name, address, contactNumber, website);
     }
 }
