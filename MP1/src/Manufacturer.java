@@ -22,6 +22,10 @@ public class Manufacturer extends ObjectPlus{
     }
 
     public void setName(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty!");
+        }
+
         this.name = name;
     }
 
@@ -30,6 +34,10 @@ public class Manufacturer extends ObjectPlus{
     }
 
     public void setAddress(String address) {
+        if (address == null || address.isEmpty()) {
+            throw new IllegalArgumentException("Address cannot be null or empty!");
+        }
+
         this.address = address;
     }
 
@@ -38,6 +46,14 @@ public class Manufacturer extends ObjectPlus{
     }
 
     public void setContactNumber(String contactNumber) {
+        if (contactNumber == null || contactNumber.isEmpty()) {
+            throw new IllegalArgumentException("Contact number cannot be null or empty!");
+        }
+
+        if (contactNumber.length() != 9){
+            throw new IllegalArgumentException("Contact number has to contain 9 digits!");
+        }
+
         this.contactNumber = contactNumber;
     }
 

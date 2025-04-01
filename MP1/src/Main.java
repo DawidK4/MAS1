@@ -48,13 +48,10 @@ public class Main {
 
         // Reading data from the extension
         try {
-            Iterable<Drug> drugExtent = ObjectPlus.getExtent(Drug.class);
-            Iterable<Manufacturer> manufacturerExtent = ObjectPlus.getExtent(Manufacturer.class);
-
-            System.out.println("\nReading data from the loaded extension: ");
-            for (var drug : drugExtent) System.out.println(drug.toString());
-            for (var manufacturer : manufacturerExtent) System.out.println(manufacturer.toString());
-        } catch (ClassNotFoundException e) {
+            System.out.println("\nContent of the loaded extension: ");
+            ObjectPlus.showExtent(Drug.class);
+            ObjectPlus.showExtent(Manufacturer.class);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

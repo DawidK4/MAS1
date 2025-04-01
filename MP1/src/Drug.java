@@ -77,8 +77,9 @@ public class Drug extends ObjectPlus{
 
     public static void setWarningLabel(String warningLabel) {
         if (warningLabel == null || warningLabel.isEmpty()) {
-            throw new IllegalArgumentException("Warning label cannot be empty.");
+            throw new IllegalArgumentException("Warning label cannot be null or empty.");
         }
+
         Drug.warningLabel = warningLabel;
     }
 
@@ -101,14 +102,26 @@ public class Drug extends ObjectPlus{
     }
 
     public void setDescription(String description) {
+        if (description.isEmpty()){
+            throw new IllegalArgumentException("Description cannot be empty!");
+        }
+
         this.description = description;
     }
 
     public void setExpirationDate(String expirationDate) {
+        if (expirationDate == null || expirationDate.isEmpty()){
+            throw new IllegalArgumentException("Expiration date cannot be null or empty!");
+        }
+
         this.expirationDate = expirationDate;
     }
 
     public void setName(String name) {
+        if (name == null || name.isEmpty()){
+            throw new IllegalArgumentException("Name cannot be null or empty!");
+        }
+
         this.name = name;
     }
 

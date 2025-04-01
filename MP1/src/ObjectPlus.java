@@ -42,4 +42,18 @@ public class ObjectPlus implements Serializable {
                         type.toString(),
                         allExtents.keySet()));
     }
+
+    public static void showExtent(Class theClass) throws Exception {
+        List<ObjectPlus> extent = null;
+        if (allExtents.containsKey(theClass)) {
+            // Extent of this class already exist
+            extent = allExtents.get(theClass);
+        } else {
+            throw new Exception("Unknown class " + theClass);
+        }
+        System.out.println("Extent of the class: " + theClass.getSimpleName());
+        for (Object obj : extent) {
+            System.out.println(obj);
+        }
+    }
 }
