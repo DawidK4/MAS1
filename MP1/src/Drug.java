@@ -6,13 +6,17 @@ public class Drug extends ObjectPlus{
     private String name;
     private Manufacturer manufacturer;
     private List<String> ingredients; // Repeatable attribute
-    private String expirationDate; // Derived attribute
+    private String expirationDate;
+    private float price;
+    private int quantity;
+    private float entireProductPrice; // Derived attribute
     private String description; // Optional attribute
 
     private static String warningLabel = "Keep out of reach of children."; // Class attribute
 
     // 1st constructor
-    public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate, String description) {
+    public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate, float price
+                , int quantity, String description) {
         // Verification of required attributes
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be null or empty.");
@@ -28,17 +32,29 @@ public class Drug extends ObjectPlus{
             throw new IllegalArgumentException("Expiration date cannot be empty or null!");
         }
 
+        if (price <= 0){
+            throw new IllegalArgumentException("Price cannot be less/equal to 0!");
+        }
+
+        if (quantity < 0){
+            throw new IllegalArgumentException("The quantity cannot be negative!");
+        }
+
         this.name = name;
         this.manufacturer = manufacturer;
         this.ingredients = new ArrayList<>(ingredients);
         this.expirationDate = expirationDate;
         this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.entireProductPrice = price * quantity;
         extension.add(this);
     }
 
     // 2nd constructor
-    public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate) {
-        this(name, manufacturer, ingredients, expirationDate, null);
+    public Drug(String name, Manufacturer manufacturer, List<String> ingredients, String expirationDate,  float price
+            , int quantity) {
+        this(name, manufacturer, ingredients, expirationDate, price, quantity, null);
     }
 
     public String getName() {

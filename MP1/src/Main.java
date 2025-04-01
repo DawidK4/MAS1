@@ -8,8 +8,8 @@ public class Main {
         Manufacturer manufacturer2 = new Manufacturer("Moderna", "Cambridge, USA", "987-654-321", "https://www.modernatx.com");
 
         // Create drugs
-        Drug drug1 = new Drug("Paracetamol", manufacturer1, Arrays.asList("Paracetamol", "Starch", "Magnesium Stearate"), "2026-12-01", "Pain reliever");
-        Drug drug2 = new Drug("Ibuprofen", manufacturer2, Arrays.asList("Ibuprofen", "Silicon Dioxide", "Cellulose"), "2025-08-15");
+        Drug drug1 = new Drug("Paracetamol", manufacturer1, Arrays.asList("Paracetamol", "Starch", "Magnesium Stearate"), "2026-12-01",100.00f, 10, "Pain reliever");
+        Drug drug2 = new Drug("Ibuprofen", manufacturer2, Arrays.asList("Ibuprofen", "Silicon Dioxide", "Cellulose"),"2025-08-15", 123.12f, 10);
 
         // Display drugs
         System.out.println("Drugs in the system:");
