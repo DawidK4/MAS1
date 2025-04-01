@@ -1,47 +1,61 @@
 import java.io.*;
-import java.util.Arrays;
+import java.util.*;
 
 public class Main {
-
     public static void main(String[] args) {
-        // Create Manufacturer and Drug objects
-        Manufacturer manufacturer = new Manufacturer("Pharma Inc.", "123 Pharma St.", "123-456-7890", "https://pharma.com");
-        Drug drug = new Drug("Aspirin", manufacturer, Arrays.asList("Salicylic Acid", "Starch"), "2025-03-31", "Pain reliever");
+        // Create manufacturers
+        Manufacturer manufacturer1 = new Manufacturer("Pfizer", "New York, USA", "123-456-789", "https://www.pfizer.com");
+        Manufacturer manufacturer2 = new Manufacturer("Moderna", "Cambridge, USA", "987-654-321", "https://www.modernatx.com");
 
-        // Serialize the objects
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("drug_serialization_test.dat"))) {
-            out.writeObject(manufacturer);
-            out.writeObject(drug);
+        // Create drugs
+        Drug drug1 = new Drug("Paracetamol", manufacturer1, Arrays.asList("Paracetamol", "Starch", "Magnesium Stearate"), "2026-12-01", "Pain reliever");
+        Drug drug2 = new Drug("Ibuprofen", manufacturer2, Arrays.asList("Ibuprofen", "Silicon Dioxide", "Cellulose"), "2025-08-15");
+
+        // Display drugs
+        System.out.println("Drugs in the system:");
+        Drug.displayExtension();
+
+        // Add an ingredient to a drug
+        drug2.addIngredient("Titanium Dioxide");
+
+        // Remove an ingredient from a drug
+        drug1.removeIngredient("Starch");
+
+        // Display updated drug info
+        System.out.println("\nUpdated drug list:");
+        Drug.displayExtension();
+
+        // Serialize objects
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("drugs.dat"))) {
+            ObjectPlus.writeExtents(oos);
+            System.out.println("\nSerialization successful.");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Deserialize the objects and verify they maintain their state
-        Manufacturer deserializedManufacturer = null;
-        Drug deserializedDrug = null;
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("drug_serialization_test.dat"))) {
-            deserializedManufacturer = (Manufacturer) in.readObject();
-            deserializedDrug = (Drug) in.readObject();
+        // Clear current extension to test deserialization
+        Drug.clearExtension();
+        System.out.println("\nAfter clearing extension:");
+        Drug.displayExtension();
+
+        // Deserialize objects
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("drugs.dat"))) {
+            ObjectPlus.readExtents(ois);
+            System.out.println("\nDeserialization successful.");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
-        // Verify the deserialized objects
-        if (deserializedManufacturer != null && deserializedDrug != null) {
-            assert deserializedManufacturer.getName().equals("Pharma Inc.");
-            assert deserializedManufacturer.getAddress().equals("123 Pharma St.");
-            assert deserializedManufacturer.getContactNumber().equals("123-456-7890");
-            assert deserializedManufacturer.getWebsite().equals("https://pharma.com");
+        // Reading data from the extension
+        try {
+            Iterable<Drug> drugExtent = ObjectPlus.getExtent(Drug.class);
+            Iterable<Manufacturer> manufacturerExtent = ObjectPlus.getExtent(Manufacturer.class);
 
-            assert deserializedDrug.getName().equals("Aspirin");
-            assert deserializedDrug.getManufacturer().equals(deserializedManufacturer);
-            assert deserializedDrug.getIngredients().equals(Arrays.asList("Salicylic Acid", "Starch"));
-            assert deserializedDrug.getExpirationDate().equals("2025-03-31");
-            assert deserializedDrug.getDescription().equals("Pain reliever");
-
-            System.out.println("Serialization and deserialization verified successfully.");
-        } else {
-            System.out.println("Serialization or deserialization failed.");
+            System.out.println("\nReading data from the loaded extension: ");
+            for (var drug : drugExtent) System.out.println(drug.toString());
+            for (var manufacturer : manufacturerExtent) System.out.println(manufacturer.toString());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 }

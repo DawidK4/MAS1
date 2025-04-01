@@ -29,8 +29,17 @@ public class ObjectPlus implements Serializable {
         stream.writeObject(allExtents);
     }
 
-    public static void readExtents(ObjectInputStream stream) throws IOException,
-            ClassNotFoundException {
+    public static void readExtents(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         allExtents = (HashMap) stream.readObject();
+    }
+
+    public static <T> Iterable<T> getExtent(Class<T> type) throws ClassNotFoundException {
+        if(allExtents.containsKey(type)) {
+            return (Iterable<T>) allExtents.get(type);
+        }
+        throw new ClassNotFoundException(
+                String.format("%s. Stored extents: %s",
+                        type.toString(),
+                        allExtents.keySet()));
     }
 }
