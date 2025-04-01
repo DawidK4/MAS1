@@ -4,8 +4,8 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         // Create manufacturers
-        Manufacturer manufacturer1 = new Manufacturer("Pfizer", "New York, USA", "123-456-789", "https://www.pfizer.com");
-        Manufacturer manufacturer2 = new Manufacturer("Moderna", "Cambridge, USA", "987-654-321", "https://www.modernatx.com");
+        Manufacturer manufacturer1 = new Manufacturer("Pfizer", "New York, USA", "123456789", "https://www.pfizer.com");
+        Manufacturer manufacturer2 = new Manufacturer("Moderna", "Cambridge, USA", "987654321", "https://www.modernatx.com");
 
         // Create drugs
         Drug drug1 = new Drug("Paracetamol", manufacturer1, Arrays.asList("Paracetamol", "Starch", "Magnesium Stearate"), "2026-12-01",100.00f, 10, "Pain reliever");

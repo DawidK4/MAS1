@@ -1,5 +1,7 @@
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Drug extends ObjectPlus{
     private static final List<Drug> extension = new ArrayList<>();
@@ -30,6 +32,10 @@ public class Drug extends ObjectPlus{
 
         if (expirationDate == null || expirationDate.isEmpty()){
             throw new IllegalArgumentException("Expiration date cannot be empty or null!");
+        }
+
+        if (!validateDate(expirationDate)){
+            throw new IllegalArgumentException("Date has to be passed in YYYY-MM-dd format!");
         }
 
         if (price <= 0){
@@ -161,8 +167,19 @@ public class Drug extends ObjectPlus{
                 ", ingredients=" + ingredients + ", expirationDate='" + expirationDate + "'}";
     }
 
-    // Class method
+    // Class methods
     public static void clearExtension() {
         extension.clear();
+    }
+
+    private static boolean validateDate(String date){
+        String regex = "^\\d{4}-\\d{2}-\\d{2}$";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(date);
+
+        if (matcher.matches()) return true;
+
+        return false;
     }
 }
